@@ -1,0 +1,19 @@
+spring:
+  jpa:
+     show-sql: false
+  main:
+     banner-mode: console
+
+logging:
+   level:
+      root: warn
+      com.profounddistortion: info
+   pattern:
+      console: "%d %magenta([%-7.7thread]) %highlight(%-5level) %-40.40logger{0} : %msg%n"
+
+jwt:
+   secret:
+      algo: HS512
+      key: "4g7/m/Yd81+a8KNRk5n3QKBmC3YWzzsoqtT7aOvm0A5wpVxy3rgmyRkl52gcDDHfiVgUgoy+UCOOufPoE2h1DQ=="
+   expire:
+      millis: 3600000 # 1 hour for now
