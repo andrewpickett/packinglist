@@ -1,55 +1,44 @@
-import React from "react";
+import React, {useState} from "react";
 import auth from "../../auth";
-import {Fade} from "react-bootstrap";
+import {Button, Fade} from "react-bootstrap";
+import Form from 'react-bootstrap/Form';
 
-class Login extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {email: '', password: '', error: null};
+function Login() {
+	const [userInfo, setUserInfo] = useState({email: '', password: ''});
+	const [loginError, setLoginError] = useState(null);
 
-		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
-
-	handleChange(event) {
-		const target = event.target;
-
-		this.setState({
-			[target.name]: target.value
-		});
-	}
-
-	handleSubmit(event) {
+	const handleSubmit = (event) => {
 		event.preventDefault();
-		auth.login(this, '/lists');
+		if (!auth.login(userInfo, setUserInfo, '/lists')) {
+			setLoginError('There was a problem logging in. Please verify your credentials and try again.');
+		}
 	}
 
-	render() {
-		return (
-			<div className="mx-auto col-7">
-				<Fade in={this.state.error}>
-					<div className={this.state.error ? "alert alert-danger" : "alert"} role="alert">
-						{ this.state.error ? this.state.error : "" }&nbsp;
-					</div>
-				</Fade>
-				<form method="POST" onSubmit={this.handleSubmit}>
-					<div className="form-group row">
-						<label htmlFor="email" className="col-sm-2 col-form-label">Email</label>
-						<div className="col-sm-10">
-							<input type="email" className="form-control" id="email" name="email" placeholder="Email" autoFocus="autoFocus" autoComplete="off" required="required" onChange={this.handleChange} value={this.state.name} />
-						</div>
-					</div>
-					<div className="form-group row">
-						<label htmlFor="inputPassword" className="col-sm-2 col-form-label">Password</label>
-						<div className="col-sm-10">
-							<input type="password" className="form-control" id="password" name="password" placeholder="Password" required="required" onChange={this.handleChange} value={this.state.password} />
-						</div>
-					</div>
-					<button type="submit" className="btn btn-primary btn-block mx-auto col-4">Sign in</button>
-				</form>
-			</div>
-		);
+	const handleChange = (event) => {
+		const { name, value } = event.target;
+		setUserInfo({...userInfo, [name]: value})
 	}
+
+	return (
+		<div className="mx-auto col-7">
+			<Fade in={!!loginError}>
+				<div className={loginError ? "alert alert-danger" : "alert"} role="alert">
+					{ loginError ? loginError : "" }&nbsp;
+				</div>
+			</Fade>
+			<Form onSubmit={handleSubmit}>
+				<Form.Group controlId="email">
+					<Form.Label>Email</Form.Label>
+					<Form.Control required type="email" name="email" placeholder="Email" autoComplete="off" autoFocus="autoFocus" onChange={handleChange} value={userInfo.name} />
+				</Form.Group>
+				<Form.Group controlId="password">
+					<Form.Label>Password</Form.Label>
+					<Form.Control type="password" name="password" placeholder="Password" onChange={handleChange} value={userInfo.password} />
+				</Form.Group>
+				<Button variant="primary" type="submit">Login</Button>
+			</Form>
+		</div>
+	);
 }
 
 export default Login;

@@ -16,6 +16,5 @@ public class ApplicationUserDto {
 	private String email;
 	private String password;
 	private boolean admin;
-	private String error;
 	private final List<PackingListDto> lists = new ArrayList<>();
 }

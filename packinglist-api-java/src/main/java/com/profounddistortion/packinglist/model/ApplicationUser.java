@@ -47,7 +47,7 @@ public class ApplicationUser {
 	}
 
 	public ApplicationUserDto toDto() {
-		ApplicationUserDto dto = new ApplicationUserDto(getId(), getEmail(), getEmail(), isAdmin(), null);
+		ApplicationUserDto dto = new ApplicationUserDto(getId(), getEmail(), getEmail(), isAdmin());
 		for (PackingList l : getLists()) {
 			dto.getLists().add(l.toDto());
 		}

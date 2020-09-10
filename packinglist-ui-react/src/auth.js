@@ -20,8 +20,8 @@ export default {
 		authenticated: false
 	},
 
-	login(viewState, redirect) {
-		axios.post('/login', viewState.state, config.AXIOS_CONFIG)
+	login(userInfo, setUserInfo, redirect) {
+		axios.post('/login', userInfo, config.AXIOS_CONFIG)
 			.then(response => {
 				sessionStorage.setItem(config.JWT_STORAGE_KEY, response.headers.authorization);
 				sessionStorage.setItem(config.USER_STORAGE_KEY, response.data['name']);
@@ -32,9 +32,7 @@ export default {
 					window.location = redirect;
 				}
 			})
-			.catch(error => {
-				viewState.setState({'error': 'There was a problem logging in. Please verify your credentials and try again.'})
-			});
+			.catch(() => { return false; });
 	},
 
 	logout() {

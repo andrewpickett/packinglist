@@ -9,11 +9,11 @@ import './App.css';
 
 import auth from './auth';
 import {Col, Container, Row} from "react-bootstrap";
+import CreateList from "./js/Lists/CreateList";
 
 function App() {
 	auth.checkAuth();
 	const isAuthenticated = auth.user.authenticated;
-	console.log(window.location.pathname);
 	let loginLinkToShow = null;
 	if (window.location.pathname !== '/login') {
 		loginLinkToShow = isAuthenticated ? <a href="/logout" role="button">Logout</a> : <a href="/login" role="button">Login</a>;
@@ -33,6 +33,7 @@ function App() {
 				<Col>
 					<Router>
 						<Switch>
+							<Route path="/lists/create" exact={true} component={CreateList} />
 							<Route path="/lists" exact={true} component={Lists} />
 
 							<Route path="/login" exact={true} component={Login} />

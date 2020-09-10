@@ -28,6 +28,11 @@ class Lists extends React.Component {
 						<Col key={list.id}>{list.name}</Col>
 					</Row>
 				))}
+				<Row>
+					<Col>
+						<a href="/lists/create" role="button" className="btn btn-primary">+ New List</a>
+					</Col>
+				</Row>
 			</Container>
 		);
 	}
