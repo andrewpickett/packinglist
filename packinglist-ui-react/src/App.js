@@ -8,8 +8,8 @@ import Lists from './js/Lists/Lists';
 import './App.css';
 
 import auth from './auth';
-import {Col, Container, Row} from "react-bootstrap";
-import CreateList from "./js/Lists/CreateList";
+import {Col, Container, Row} from 'react-bootstrap';
+import CreateList from './js/Lists/CreateList';
 
 function App() {
 	auth.checkAuth();

@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import auth from "../../auth";
-import {Button, Fade} from "react-bootstrap";
+import React, {useState} from 'react';
+import auth from '../../auth';
+import {Button, Fade} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
 function Login() {

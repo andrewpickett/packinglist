@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 import axios from 'axios';
-import auth from "../../auth";
-import {Col, Container, Row} from "react-bootstrap";
+import auth from '../../auth';
+import {Col, Container, Row} from 'react-bootstrap';
 
 class Lists extends React.Component {
 	constructor(props) {

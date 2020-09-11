@@ -1,53 +1,50 @@
-import React from "react";
-import {Container, Fade} from "react-bootstrap";
+import React from 'react';
+import axios from 'axios';
+import auth from '../../auth';
+import {Container} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+import config from '../../config';
 
 class CreateList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			name: '',
+			categories: [],
+			userId: auth.getUserInfoFromToken()['userId']
 		}
+
+		this.handleChange = this.handleChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	handleSubmit(event) {
+		event.preventDefault();
+		axios.post('/api/lists', this.state, config.AXIOS_CONFIG)
+			.then(response => {
+				console.log("SUCCESS");
+			})
+			.catch(() => { return false; });
+	}
+
+	handleChange(event) {
+		const { name, value } = event.target;
+		console.log("Updating " + name + " with " + value);
+		this.setState({[name]: value});
 	}
 
 	componentDidMount() {
-		// axios.get('/api/lists', { headers: auth.getAuthHeader() })
-		// 	.then(response => {
-		// 		this.setState({
-		// 			lists: response.data
-		// 		});
-		// 	});
 	}
 
 	render() {
 		return (
-			// <div className="mx-auto col-7">
-			// 	<Fade in={this.state.error}>
-			// 		<div className={this.state.error ? "alert alert-danger" : "alert"} role="alert">
-			// 			{ this.state.error ? this.state.error : "" }&nbsp;
-			// 		</div>
-			// 	</Fade>
-			// 	<form method="POST" onSubmit={this.handleSubmit}>
-			// 		<div className="form-group row">
-			// 			<label htmlFor="email" className="col-sm-2 col-form-label">Email</label>
-			// 			<div className="col-sm-10">
-			// 				<input type="email" className="form-control" id="email" name="email" placeholder="Email" autoFocus="autoFocus" autoComplete="off" required="required" onChange={this.handleChange} value={this.state.name} />
-			// 			</div>
-			// 		</div>
-			// 		<div className="form-group row">
-			// 			<label htmlFor="inputPassword" className="col-sm-2 col-form-label">Password</label>
-			// 			<div className="col-sm-10">
-			// 				<input type="password" className="form-control" id="password" name="password" placeholder="Password" required="required" onChange={this.handleChange} value={this.state.password} />
-			// 			</div>
-			// 		</div>
-			// 		<button type="submit" className="btn btn-primary btn-block mx-auto col-4">Sign in</button>
-			// 	</form>
-			// </div>
 			<Container className="mx-auto col-7">
-				<Form>
+				<Form onSubmit={this.handleSubmit}>
+					<Form.Group controlId="name">
+						<Form.Label>List Name</Form.Label>
+						<Form.Control required type="text" name="name" placeholder="List Name" autoFocus="autoFocus" onChange={this.handleChange} value={this.state.name} />
+					</Form.Group>
 				</Form>
-					{/*form method="POST" onSubmit={this.handleSubmit}>*/}
-				{/*</Formform>*/}
-				Create here
 			</Container>
 		);
 	}

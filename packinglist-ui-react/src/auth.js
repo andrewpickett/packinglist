@@ -33,6 +33,8 @@ export default {
 				}
 			})
 			.catch(() => { return false; });
+
+		return true;
 	},
 
 	logout() {
@@ -51,5 +53,18 @@ export default {
 		return {
 			'Authorization': 'Bearer ' + sessionStorage.getItem(config.JWT_STORAGE_KEY)
 		}
+	},
+
+	getUserInfoFromToken() {
+		let jwt = sessionStorage.getItem(config.JWT_STORAGE_KEY);
+		if (jwt) {
+			return {
+				"role": jwt['role'],
+				"userId": jwt['userId'],
+				"email": jwt['sub'],
+				"name": jwt['name']
+			}
+		}
+		return null;
 	}
 }

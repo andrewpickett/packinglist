@@ -1,5 +1,6 @@
-import React from "react";
-import auth from "../../auth";
+import React from 'react';
+import auth from '../../auth';
+import {Container} from 'react-bootstrap';
 
 function Home(props) {
 	if (props.logout) {
@@ -7,9 +8,9 @@ function Home(props) {
 	}
 
 	return (
-		<div>
+		<Container>
 			Home page here.
-		</div>
+		</Container>
 	);
 }
 
