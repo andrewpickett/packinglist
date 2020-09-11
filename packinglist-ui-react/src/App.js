@@ -1,22 +1,18 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {Col, Container, Row} from 'react-bootstrap';
+
+import auth from './auth';
 
 import Login from './js/Login/Login';
 import Home from './js/Home/Home';
 import Lists from './js/Lists/Lists';
-
-import './App.css';
-
-import auth from './auth';
-import {Col, Container, Row} from 'react-bootstrap';
 import CreateList from './js/Lists/CreateList';
 
-function App() {
-	auth.checkAuth();
-	const isAuthenticated = auth.user.authenticated;
+export default function App() {
 	let loginLinkToShow = null;
 	if (window.location.pathname !== '/login') {
-		loginLinkToShow = isAuthenticated ? <a href="/logout" role="button">Logout</a> : <a href="/login" role="button">Login</a>;
+		loginLinkToShow = auth.checkAuth() ? <a href="/logout" role="button">Logout</a> : <a href="/login" role="button">Login</a>;
 	}
 
 	return (
@@ -47,5 +43,3 @@ function App() {
 		</Container>
 	);
 }
-
-export default App;

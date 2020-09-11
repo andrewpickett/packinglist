@@ -5,6 +5,7 @@ import com.profounddistortion.packinglist.model.dto.ApplicationUserDto;
 import com.profounddistortion.packinglist.security.JwtAuthenticationToken;
 import com.profounddistortion.packinglist.security.JwtContainer;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

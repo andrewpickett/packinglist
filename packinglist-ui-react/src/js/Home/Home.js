@@ -2,7 +2,7 @@ import React from 'react';
 import auth from '../../auth';
 import {Container} from 'react-bootstrap';
 
-function Home(props) {
+export default function Home(props) {
 	if (props.logout) {
 		auth.logout();
 	}
@@ -13,5 +13,3 @@ function Home(props) {
 		</Container>
 	);
 }
-
-export default Home;

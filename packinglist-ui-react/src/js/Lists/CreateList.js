@@ -1,53 +1,37 @@
-import React from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
-import auth from '../../auth';
-import {Container} from 'react-bootstrap';
+import {Button, Container} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import config from '../../config';
+import auth from '../../auth';
+import Unauthorized from '../Exception/Unauthorized';
 
-class CreateList extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			name: '',
-			categories: [],
-			userId: auth.getUserInfoFromToken()['userId']
-		}
+export default function CreateList() {
+	const [list, setList] = useState({name: '', categories: []});
 
-		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
-
-	handleSubmit(event) {
+	const handleSubmit = (event) => {
 		event.preventDefault();
-		axios.post('/api/lists', this.state, config.AXIOS_CONFIG)
-			.then(response => {
-				console.log("SUCCESS");
-			})
-			.catch(() => { return false; });
+		axios.post('/api/lists', this.state)
+			.then(() => {
+				// TODO: Figure out the flow I want here.
+				window.location = '/lists';
+			});
 	}
 
-	handleChange(event) {
+	const handleChange = (event) => {
 		const { name, value } = event.target;
-		console.log("Updating " + name + " with " + value);
-		this.setState({[name]: value});
+		setList({...list, [name]: value});
 	}
 
-	componentDidMount() {
-	}
-
-	render() {
-		return (
-			<Container className="mx-auto col-7">
-				<Form onSubmit={this.handleSubmit}>
-					<Form.Group controlId="name">
-						<Form.Label>List Name</Form.Label>
-						<Form.Control required type="text" name="name" placeholder="List Name" autoFocus="autoFocus" onChange={this.handleChange} value={this.state.name} />
-					</Form.Group>
-				</Form>
-			</Container>
-		);
-	}
+	return (
+		<Container className="mx-auto col-7">
+			{!auth.checkAuth() ? <Unauthorized /> : null}
+			<Form onSubmit={handleSubmit}>
+				<Form.Group controlId="name">
+					<Form.Label>List Name</Form.Label>
+					<Form.Control required type="text" name="name" placeholder="List Name" autoFocus="autoFocus" onChange={handleChange} value={list.name} />
+				</Form.Group>
+				<Button variant="primary" type="submit">Create</Button>
+			</Form>
+		</Container>
+	);
 }
-
-export default CreateList;

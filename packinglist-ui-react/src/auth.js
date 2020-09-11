@@ -6,35 +6,42 @@ axios.defaults.withCredentials = true;
 axios.interceptors.response.use(
 	response => response,
 	error => {
-		if (error.response.status === 401) {
+		if (error.response.status === 401 || error.response.status === 403) {
 			if (!error.config.url.endsWith('/login')) {
-				window.location = '/logout';
+				window.location = '/login';
 			}
 		}
 		return Promise.reject(error);
 	}
 );
+axios.interceptors.request.use(function (axiosConfig) {
+	const jwtToken = sessionStorage.getItem(config.JWT_STORAGE_KEY);
+	if (jwtToken) {
+		axiosConfig.headers['Authorization'] = 'Bearer ' + jwtToken;
+	}
+	return axiosConfig;
+}, function (error) {
+	return Promise.reject(error);
+});
 
 export default {
 	user: {
 		authenticated: false
 	},
 
-	login(userInfo, setUserInfo, redirect) {
-		axios.post('/login', userInfo, config.AXIOS_CONFIG)
-			.then(response => {
-				sessionStorage.setItem(config.JWT_STORAGE_KEY, response.headers.authorization);
-				sessionStorage.setItem(config.USER_STORAGE_KEY, response.data['name']);
-				axios.defaults.headers.post['Authorization'] = response.headers.authorization;
-				this.user.authenticated = true;
-
-				if (redirect) {
-					window.location = redirect;
-				}
-			})
-			.catch(() => { return false; });
-
-		return true;
+	login(userInfo) {
+		return new Promise((resolve, reject) => {
+			axios.post('/login', userInfo)
+				.then(response => {
+					sessionStorage.setItem(config.JWT_STORAGE_KEY, response.headers.authorization);
+					sessionStorage.setItem(config.USER_STORAGE_KEY, response.data['name']);
+					this.user.authenticated = true;
+					resolve("Successful login");
+				})
+				.catch(() => {
+					reject("Failed login.");
+				});
+		});
 	},
 
 	logout() {
@@ -47,24 +54,6 @@ export default {
 	checkAuth() {
 		let jwt = sessionStorage.getItem(config.JWT_STORAGE_KEY);
 		this.user.authenticated = !!jwt;
-	},
-
-	getAuthHeader() {
-		return {
-			'Authorization': 'Bearer ' + sessionStorage.getItem(config.JWT_STORAGE_KEY)
-		}
-	},
-
-	getUserInfoFromToken() {
-		let jwt = sessionStorage.getItem(config.JWT_STORAGE_KEY);
-		if (jwt) {
-			return {
-				"role": jwt['role'],
-				"userId": jwt['userId'],
-				"email": jwt['sub'],
-				"name": jwt['name']
-			}
-		}
-		return null;
+		return this.user.authenticated;
 	}
 }

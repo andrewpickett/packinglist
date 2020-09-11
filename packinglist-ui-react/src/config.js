@@ -1,10 +1,7 @@
 export default {
 	BASE_URL: buildBaseUrl(),
 	JWT_STORAGE_KEY: "packinglist.jwt",
-	USER_STORAGE_KEY: "packinglist.user",
-	AXIOS_CONFIG: {
-	},
-	allowedAnonymousRoutes: ['login']
+	USER_STORAGE_KEY: "packinglist.user"
 }
 
 function buildBaseUrl() {

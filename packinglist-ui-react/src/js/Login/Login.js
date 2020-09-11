@@ -1,17 +1,18 @@
 import React, {useState} from 'react';
-import auth from '../../auth';
-import {Button, Fade} from 'react-bootstrap';
+import {Button, Container, Fade} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
-function Login() {
+import auth from '../../auth';
+
+export default function Login(props) {
 	const [userInfo, setUserInfo] = useState({email: '', password: ''});
-	const [loginError, setLoginError] = useState(null);
+	const [loginError, setLoginError] = useState(props.location.state ? props.location.state.error : null);
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		if (!auth.login(userInfo, setUserInfo, '/lists')) {
-			setLoginError('There was a problem logging in. Please verify your credentials and try again.');
-		}
+		auth.login(userInfo,)
+			.then(() => { window.location = '/lists'; })
+			.catch(() => { setLoginError('There was a problem logging in. Please verify your credentials and try again.'); });
 	}
 
 	const handleChange = (event) => {
@@ -20,7 +21,7 @@ function Login() {
 	}
 
 	return (
-		<div className="mx-auto col-7">
+		<Container className="mx-auto col-7">
 			<Fade in={!!loginError}>
 				<div className={loginError ? "alert alert-danger" : "alert"} role="alert">
 					{ loginError ? loginError : "" }&nbsp;
@@ -37,8 +38,6 @@ function Login() {
 				</Form.Group>
 				<Button variant="primary" type="submit">Login</Button>
 			</Form>
-		</div>
+		</Container>
 	);
 }
-
-export default Login;

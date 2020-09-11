@@ -11,5 +11,9 @@ module.exports = merge(common, {
 		config: JSON.stringify({
 			apiUrl: 'http://localhost:8080'
 		})
+	},
+	devtool: 'inline-source-map',
+	performance: {
+		hints: false
 	}
 });

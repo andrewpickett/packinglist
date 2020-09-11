@@ -1,21 +1,31 @@
 import React from 'react';
-import axios from 'axios';
-import auth from '../../auth';
 import {Col, Container, Row} from 'react-bootstrap';
 
-class Lists extends React.Component {
+import axios from 'axios';
+import auth from '../../auth';
+
+import Unauthorized from '../Exception/Unauthorized';
+import Loader from '../Layout/Loader';
+
+export default class Lists extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			lists: []
+			lists: <Loader />
 		}
 	}
 
 	componentDidMount() {
-		axios.get('/api/lists', { headers: auth.getAuthHeader() })
+		axios.get('/api/lists')
 			.then(response => {
 				this.setState({
-					lists: response.data
+					lists: <div>
+						{response.data.map(list => (
+							<Row key={list.id}>
+								<Col>{list.name}</Col>
+							</Row>
+						))}
+					</div>
 				});
 			});
 	}
@@ -23,11 +33,8 @@ class Lists extends React.Component {
 	render() {
 		return (
 			<Container>
-				{this.state.lists.map(list => (
-					<Row>
-						<Col key={list.id}>{list.name}</Col>
-					</Row>
-				))}
+				{!auth.checkAuth() ? <Unauthorized /> : null}
+				{this.state.lists}
 				<Row>
 					<Col>
 						<a href="/lists/create" role="button" className="btn btn-primary">+ New List</a>
@@ -37,5 +44,3 @@ class Lists extends React.Component {
 		);
 	}
 }
-
-export default Lists;

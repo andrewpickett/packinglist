@@ -38,18 +38,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.anonymous()
 			.and()
 				.authorizeRequests()
-				.antMatchers("/login", "/h2-console/**").permitAll()
+				.antMatchers("/").permitAll()
 				.anyRequest().authenticated()
 			.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 				.addFilterBefore(new JwtLoginFilter("/login", authenticationManager(), jwtContainer), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JwtAuthenticationFilter(jwtContainer), UsernamePasswordAuthenticationFilter.class)
-			.exceptionHandling().accessDeniedHandler((request, response, accessDeniedException) -> {
-				response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			}).authenticationEntryPoint((request, response, authenticationException) -> {
-
-			});
+			.exceptionHandling()
+				.accessDeniedHandler((request, response, accessDeniedException) -> {
+					response.setStatus(HttpStatus.UNAUTHORIZED.value());
+				})
+				.authenticationEntryPoint((request, response, authenticationException) -> {
+					response.setStatus(HttpStatus.UNAUTHORIZED.value());
+				});
 	}
 
 	@Override
