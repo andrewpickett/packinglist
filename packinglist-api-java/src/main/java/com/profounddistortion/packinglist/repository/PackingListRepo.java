@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface PackingListRepo extends JpaRepository<PackingList, Long> {
 
-	List<PackingList> findAllByUser(ApplicationUser user);
+	List<PackingList> findAllByUserOrderByNameAsc(ApplicationUser user);
 
 	Optional<PackingList> findByUserAndId(ApplicationUser user, long id);
 

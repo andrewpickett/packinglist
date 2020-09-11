@@ -5,6 +5,7 @@ import com.profounddistortion.packinglist.model.PackingList;
 import com.profounddistortion.packinglist.model.dto.PackingListDto;
 import com.profounddistortion.packinglist.service.PackingListService;
 import com.profounddistortion.packinglist.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class PackingListController {
 	private final PackingListService plService;
 	private final UserService userService;
@@ -31,6 +33,7 @@ public class PackingListController {
 	@GetMapping("/lists")
 	public List<PackingListDto> getLists() {
 		ApplicationUser user = ApplicationUser.fromDto(userService.getUserFromJWTToken());
+		log.debug("User {} attempting to get their lists.", user.getId());
 		return plService.getPackingListsForUser(user).stream().map(PackingList::toDto).collect(Collectors.toList());
 	}
 
@@ -43,6 +46,7 @@ public class PackingListController {
 	@PostMapping("/lists")
 	public PackingListDto createList(@RequestBody PackingListDto list) {
 		ApplicationUser user = ApplicationUser.fromDto(userService.getUserFromJWTToken());
+		log.debug("User {} creating a new list '{}'.", user.getId(), list.getName());
 		return plService.createPackingList(user, PackingList.fromDto(list)).toDto();
 	}
 

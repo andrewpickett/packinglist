@@ -5,6 +5,7 @@ import com.profounddistortion.packinglist.security.filter.JwtLoginFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -38,7 +39,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.anonymous()
 			.and()
 				.authorizeRequests()
-				.antMatchers("/").permitAll()
+				.antMatchers("/", "/h2-console/**").permitAll()
 				.anyRequest().authenticated()
 			.and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

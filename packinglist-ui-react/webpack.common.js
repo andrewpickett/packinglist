@@ -15,7 +15,7 @@ module.exports = {
 		rules: [
 			{ test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
 			{ test: /\.css$/, loader: 'style-loader!css-loader' },
-			{ test: /\.(png|jpe?g|gif)$/, loader: 'url-loader?limit=10000&name=img/[name].[ext]' },
+			{ test: /\.(png|jpe?g|gif)$/, loader: 'file-loader' },
 			{ test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' }
 		]
 	},

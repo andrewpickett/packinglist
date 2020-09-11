@@ -10,7 +10,7 @@ export default function CreateList() {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		axios.post('/api/lists', this.state)
+		axios.post('/api/lists', list)
 			.then(() => {
 				// TODO: Figure out the flow I want here.
 				window.location = '/lists';

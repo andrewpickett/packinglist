@@ -22,7 +22,7 @@ public class PackingListService {
 	private final PackingListItemRepo itemRepo;
 
 	public List<PackingList> getPackingListsForUser(ApplicationUser user) {
-		return listRepo.findAllByUser(user);
+		return listRepo.findAllByUserOrderByNameAsc(user);
 	}
 
 	public PackingList getPackingListById(ApplicationUser user, long id) {
