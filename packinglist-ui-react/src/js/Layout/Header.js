@@ -26,10 +26,11 @@ export default function Header() {
 			{isLoggedIn ?
 				<Row>
 					<Col>
-						<Navbar bg="light" variant="light">
+						<Navbar bg="light" variant="light" className="shadow">
 							<Container className="px-4">
 								<Nav>
-									<Nav.Link href="/lists" className="py-0">My Lists</Nav.Link>
+									<Nav.Link href="/lists" className="py-0 px-3">My Lists</Nav.Link>
+									<Nav.Link href="/samples" className="py-0 px-3">Sample Lists</Nav.Link>
 								</Nav>
 							</Container>
 						</Navbar>

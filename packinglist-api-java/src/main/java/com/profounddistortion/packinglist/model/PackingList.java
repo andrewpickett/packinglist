@@ -49,7 +49,7 @@ public class PackingList {
 	}
 
 	public PackingListDto toDto() {
-		PackingListDto dto = new PackingListDto(getId(), getName(), getUser().getId());
+		PackingListDto dto = new PackingListDto(getId(), getName(), getUser() == null ? -1 : getUser().getId());
 		for (PackingListCategory c : getCategories()) {
 			dto.getCategories().add(c.toDto());
 		}

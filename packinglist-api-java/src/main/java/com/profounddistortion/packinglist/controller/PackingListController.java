@@ -37,6 +37,11 @@ public class PackingListController {
 		return plService.getPackingListsForUser(user).stream().map(PackingList::toDto).collect(Collectors.toList());
 	}
 
+	@GetMapping("/lists/samples")
+	public List<PackingListDto> getSamples() {
+		return plService.getPackingListSamples().stream().map(PackingList::toDto).collect(Collectors.toList());
+	}
+
 	@GetMapping("/lists/{listId}")
 	public PackingListDto getListById(@PathVariable long listId) {
 		ApplicationUser user = ApplicationUser.fromDto(userService.getUserFromJWTToken());

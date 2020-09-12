@@ -13,6 +13,12 @@ public interface PackingListRepo extends JpaRepository<PackingList, Long> {
 
 	List<PackingList> findAllByUserOrderByNameAsc(ApplicationUser user);
 
+	List<PackingList> findAllByUserIsNullOrderByNameAsc();
+
+	List<PackingList> findAllByUserNullOrderByNameAsc();
+
+
+
 	Optional<PackingList> findByUserAndId(ApplicationUser user, long id);
 
 }

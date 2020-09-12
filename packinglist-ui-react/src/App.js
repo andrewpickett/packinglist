@@ -7,6 +7,7 @@ import Home from './js/Home/Home';
 import Lists from './js/Lists/Lists';
 import CreateList from './js/Lists/CreateList';
 import Header from './js/Layout/Header';
+import Samples from './js/Lists/Samples';
 
 export default function App() {
 	return (
@@ -20,6 +21,7 @@ export default function App() {
 								<Switch>
 									<Route path="/lists/create" exact={true} component={CreateList} />
 									<Route path="/lists" exact={true} component={Lists} />
+									<Route path="/samples" exact={true} component={Samples} />
 
 									<Route path="/login" exact={true} component={Login} />
 									<Route path="/logout" exact={true}><Home logout={true} /></Route>

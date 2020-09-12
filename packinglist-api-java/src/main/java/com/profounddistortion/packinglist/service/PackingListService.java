@@ -25,6 +25,10 @@ public class PackingListService {
 		return listRepo.findAllByUserOrderByNameAsc(user);
 	}
 
+	public List<PackingList> getPackingListSamples() {
+		return listRepo.findAllByUserNullOrderByNameAsc();
+	}
+
 	public PackingList getPackingListById(ApplicationUser user, long id) {
 		return listRepo.findByUserAndId(user, id).orElseThrow(NotFoundException::new);
 	}
