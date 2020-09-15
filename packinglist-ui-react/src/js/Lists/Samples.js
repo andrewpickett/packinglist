@@ -32,7 +32,7 @@ export default class Samples extends React.Component {
 		return (
 			<Container>
 				{!auth.checkAuth() ? <Unauthorized /> : null}
-				<Row className="p-1 rounded-top bg-secondary">
+				<Row className="p-2 rounded-top bg-secondary">
 					<Col className="text-right">
 						&nbsp;
 					</Col>
