@@ -8,6 +8,7 @@ import Lists from './js/Lists/Lists';
 import CreateList from './js/Lists/CreateList';
 import Header from './js/Layout/Header';
 import Samples from './js/Lists/Samples';
+import List from './js/Lists/List';
 
 export default function App() {
 	return (
@@ -20,6 +21,7 @@ export default function App() {
 							<Router>
 								<Switch>
 									<Route path="/lists/create" exact={true} component={CreateList} />
+									<Route path="/lists/:id" exact={true} component={List} />
 									<Route path="/lists" exact={true} component={Lists} />
 									<Route path="/samples" exact={true} component={Samples} />
 
