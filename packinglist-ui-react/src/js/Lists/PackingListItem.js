@@ -8,7 +8,7 @@ export default function PackingListItem(props) {
 	return (
 		<Row className="p-2 border-bottom border-left border-right">
 			<Col className="text-left"><Link to={'/lists/' + packingList.id}>{packingList.name}</Link></Col>
-			<Col className="text-right"><a href="#">[EDIT]</a></Col>
+			<Col className="text-right"><Link to={'/lists/' + packingList.id + '/edit'}>[EDIT]</Link></Col>
 		</Row>
 	);
 }
