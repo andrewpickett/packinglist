@@ -22,9 +22,10 @@ export default function App() {
 									<Route path="/lists/create" exact={true} render={(props) => <List {...props} editMode={true} />} />
 									<Route path="/lists/:id" exact={true} render={(props) => <List {...props} editMode={false} />} />
 									<Route path="/lists/:id/edit" exact={true} render={(props) => <List {...props} editMode={true} />} />
-
 									<Route path="/lists" exact={true} component={Lists} />
-									<Route path="/samples" exact={true} component={Samples} />
+
+									<Route path="/samples/:id" exact={true} render={(props) => <List {...props} editMode={false} isSample={true} />} />
+									<Route path="/samples" exact={true} render={(props) => <Lists {...props} editMode={false} isSample={true} />} />
 
 									<Route path="/login" exact={true} component={Login} />
 									<Route path="/logout" exact={true}><Home logout={true} /></Route>

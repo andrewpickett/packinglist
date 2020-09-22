@@ -28,6 +28,10 @@ public class PackingListItem {
 	@JoinColumn(name = "packinglist_category_id")
 	private PackingListCategory category;
 
+	public PackingListItem(String name) {
+		this.name = name;
+	}
+
 	public static PackingListItem fromDto(PackingListItemDto dto) {
 		PackingListItem item = new PackingListItem();
 		item.setId(dto.getId());

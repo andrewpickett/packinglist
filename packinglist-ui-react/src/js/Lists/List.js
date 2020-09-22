@@ -18,16 +18,20 @@ export default class List extends React.Component {
 			editMode: this.props.editMode
 		}
 
+		this.baseUrl = '/api/lists' + (props.isSample ? '/samples' : '');
+
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleListChange = this.handleListChange.bind(this);
 		this.handleAddCategory = this.handleAddCategory.bind(this);
+		this.handleAddItem = this.handleAddItem.bind(this);
 		this.handleCategoryChange = this.handleCategoryChange.bind(this);
+		this.handleItemChange = this.handleItemChange.bind(this);
 	}
 
 	handleSubmit(event) {
 		event.preventDefault();
 		if (this.state.editMode) {
-			axios.post('/api/lists', this.state.list)
+			axios.post(this.baseUrl, this.state.list)
 				.then(() => {
 					window.location = '/lists'
 				});
@@ -46,15 +50,27 @@ export default class List extends React.Component {
 		this.setState({list: list});
 	}
 
+	handleAddItem(idx) {
+		let list = this.state.list;
+		list.categories[idx].items.push({name: ''});
+		this.setState({list: list});
+	}
+
 	handleCategoryChange(event, idx) {
 		let list = this.state.list;
 		list.categories[idx].name = event.target.value;
 		this.setState({list: list});
 	};
 
+	handleItemChange(event, catIdx, itemIdx) {
+		let list = this.state.list;
+		list.categories[catIdx].items[itemIdx].name = event.target.value;
+		this.setState({list: list});
+	};
+
 	componentDidMount() {
 		if (this.state.id) {
-			axios.get('/api/lists/' + this.state.id, {})
+			axios.get(this.baseUrl + '/' + this.state.id, {})
 				.then((response) => {
 					this.setState({list: response.data});
 				});
@@ -82,7 +98,8 @@ export default class List extends React.Component {
 							{row.map((card, idx2) => (
 								<Category key={"category" + ((idx1 * 3) + idx2)} index={(idx1 * 3) + idx2}
 													 onChange={this.handleCategoryChange} editMode={this.state.editMode}
-													 name={this.state.list.categories[((idx1 * 3) + idx2)].name} />
+											 		 onAddItem={this.handleAddItem} onItemChange={this.handleItemChange}
+													 category={this.state.list.categories[((idx1 * 3) + idx2)]} />
 							))}
 						</CardDeck>
 					))}

@@ -17,9 +17,14 @@ export default class Lists extends React.Component {
 	}
 
 	componentDidMount() {
-		axios.get('/api/lists')
+		let urlToCall = '/api/lists';
+		if (this.props.isSample) {
+			urlToCall += '/samples';
+		}
+
+		axios.get(urlToCall)
 			.then(response => {
-				const lists = response.data.map(list => <PackingListItem key={list.id} list={list}/>);
+				const lists = response.data.map(list => <PackingListItem key={list.id} list={list} isSample={this.props.isSample} />);
 				if (lists && lists.length > 0) {
 					this.setState({lists: lists});
 				} else {
@@ -34,7 +39,11 @@ export default class Lists extends React.Component {
 				{!auth.checkAuth() ? <Unauthorized /> : null}
 				<Row className="p-1 rounded-top bg-secondary">
 					<Col className="text-right">
-						<a href="/lists/create" role="button" className="btn btn-primary btn-sm">+ New List</a>
+						{this.props.isSample ?
+							<div>&nbsp;</div>
+							:
+							<a href="/lists/create" role="button" className="btn btn-primary btn-sm">+ New List</a>
+						}
 					</Col>
 				</Row>
 				{this.state.lists}

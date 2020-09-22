@@ -8,6 +8,8 @@ axios.interceptors.response.use(
 	error => {
 		if (error.response.status === 401 || error.response.status === 403) {
 			if (!error.config.url.endsWith('/login')) {
+				sessionStorage.removeItem(config.JWT_STORAGE_KEY);
+				sessionStorage.removeItem(config.USER_STORAGE_KEY);
 				window.location = '/login';
 			}
 		}

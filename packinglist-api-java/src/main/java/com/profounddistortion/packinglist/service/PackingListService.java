@@ -29,6 +29,16 @@ public class PackingListService {
 		return listRepo.findAllByUserNullOrderByNameAsc();
 	}
 
+	public PackingList getPackingListSampleById(long id) {
+		List<PackingList> samples = getPackingListSamples();
+		for (PackingList sample : samples) {
+			if (sample.getId() == id) {
+				return sample;
+			}
+		}
+		throw new NotFoundException();
+	}
+
 	public PackingList getPackingListById(ApplicationUser user, long id) {
 		return listRepo.findByUserAndId(user, id).orElseThrow(NotFoundException::new);
 	}

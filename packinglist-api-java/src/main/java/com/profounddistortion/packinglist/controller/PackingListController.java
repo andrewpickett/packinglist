@@ -48,6 +48,11 @@ public class PackingListController {
 		return plService.getPackingListById(user, listId).toDto();
 	}
 
+	@GetMapping("/lists/samples/{listId}")
+	public PackingListDto getSampleById(@PathVariable long listId) {
+		return plService.getPackingListSampleById(listId).toDto();
+	}
+
 	@PostMapping("/lists")
 	public PackingListDto createList(@RequestBody PackingListDto list) {
 		ApplicationUser user = ApplicationUser.fromDto(userService.getUserFromJWTToken());

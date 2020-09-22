@@ -1,6 +1,7 @@
 import React from 'react';
 import {Card, Col, Row} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
+import CategoryItems from './CategoryItems';
 
 export default function Category(props) {
 	return (
@@ -9,23 +10,13 @@ export default function Category(props) {
 				{props.editMode ?
 					<Form.Control required type="text" name={"list.categories[" + props.index + "].name"}
 									  placeholder="Category Name" onChange={(e) => props.onChange(e, props.index)}
-									  value={props.name} />
+									  value={props.category.name} />
 					:
-					<h5>{props.name}</h5>
+					<h5>{props.category.name}</h5>
 				}
 			</Card.Header>
 			<Card.Body>
-				{props.editMode ?
-					<Row>
-						<Col className="col-1 text-lg-center"> + </Col>
-						<Col>
-							<Form.Control type="text" onChange={(e) => props.onChange(e, props.index)}
-											  placeholder="List Item" value={props.name}/>
-						</Col>
-					</Row>
-					:
-					<Card.Text>Let's display stuff here</Card.Text>
-				}
+				<CategoryItems onAddItem={props.onAddItem} onChange={props.onItemChange} index={props.index} category={props.category} editMode={props.editMode} />
 			</Card.Body>
 		</Card>
 	);
