@@ -3,6 +3,7 @@ import {Button, Card, Col, Row} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import CategoryItems from './CategoryItems';
 import './Category.css';
+import {FaRegWindowClose} from 'react-icons/fa';
 
 export default function Category(props) {
 	return (
@@ -15,8 +16,10 @@ export default function Category(props) {
 											  placeholder="Category Name" onChange={(e) => props.onChange(e, props.index)}
 											  value={props.category.name} />
 						</Col>
-						<Col className="col-1 text-right p-0">
-					  		<Button variant="danger" tabIndex={-1} size="sm" onClick={() => props.onRemove(props.index)}>X</Button>
+						<Col className="col-2 text-right p-0">
+					  		<Button variant="link" tabIndex={-1} size="sm" onClick={() => props.onRemove(props.index)}>
+								<FaRegWindowClose size={24} color={"red"} />
+							</Button>
 						</Col>
 					</Row>
 					:

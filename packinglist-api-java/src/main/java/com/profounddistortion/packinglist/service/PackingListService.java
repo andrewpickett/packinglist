@@ -66,4 +66,12 @@ public class PackingListService {
 		}
 		return listRepo.save(list);
 	}
+
+	public void deletePackingList(ApplicationUser user, long listId) {
+		PackingList list = getPackingListById(user, listId);
+		if (list == null) {
+			throw new AccessDeniedException("You do not have access to update this list.");
+		}
+		listRepo.deleteById(listId);
+	}
 }

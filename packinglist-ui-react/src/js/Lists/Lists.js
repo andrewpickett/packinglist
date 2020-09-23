@@ -7,6 +7,7 @@ import auth from '../../auth';
 import Unauthorized from '../Exception/Unauthorized';
 import Loader from '../Layout/Loader';
 import PackingListItem from './PackingListItem';
+import {FaPlus} from 'react-icons/fa';
 
 export default class Lists extends React.Component {
 	constructor(props) {
@@ -14,6 +15,16 @@ export default class Lists extends React.Component {
 		this.state = {
 			lists: <Loader />
 		}
+
+		this.handleDeleteList = this.handleDeleteList.bind(this);
+	}
+
+	handleDeleteList(event, id) {
+		event.preventDefault();
+		axios.delete("/api/lists/" + id)
+			.then(() => {
+				window.location.reload();
+			});
 	}
 
 	componentDidMount() {
@@ -24,11 +35,11 @@ export default class Lists extends React.Component {
 
 		axios.get(urlToCall)
 			.then(response => {
-				const lists = response.data.map(list => <PackingListItem key={list.id} list={list} isSample={this.props.isSample} />);
+				const lists = response.data.map(list => <PackingListItem key={list.id} list={list} isSample={this.props.isSample} onDelete={this.handleDeleteList}/>);
 				if (lists && lists.length > 0) {
 					this.setState({lists: lists});
 				} else {
-					this.setState({lists: <div className="p-3">You have no packing lists yet.</div>});
+					this.setState({lists: <Row className="border-left border-right p-3">You have no packing lists yet.</Row>});
 				}
 			});
 	}
@@ -42,7 +53,9 @@ export default class Lists extends React.Component {
 						{this.props.isSample ?
 							<div>&nbsp;</div>
 							:
-							<a href="/lists/create" role="button" className="btn btn-primary btn-sm">+ New List</a>
+							<a href="/lists/create" role="button" className="btn btn-primary btn-sm">
+								<FaPlus size={10} style={{marginTop:"-4px"}} /> New List
+							</a>
 						}
 					</Col>
 				</Row>

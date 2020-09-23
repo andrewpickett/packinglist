@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Col, Container, Row} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import './CategoryItems.css';
+import {FaPlus, FaRegWindowClose} from 'react-icons/fa';
 
 export default function CategoryItems(props) {
 
@@ -21,7 +22,9 @@ export default function CategoryItems(props) {
 													value={item.name} className="borderless" />
 								</Col>
 								<Col className="col-1 text-left p-0">
-									<Button tabIndex={-1} onClick={() => props.onRemove(props.index, idx)} variant="outline-danger" size="sm">X</Button>
+									<Button tabIndex={-1} onClick={() => props.onRemove(props.index, idx)} variant="link" size="sm">
+										<FaRegWindowClose size={16} color={"red"} />
+									</Button>
 								</Col>
 							</Row>
 							:
@@ -33,7 +36,9 @@ export default function CategoryItems(props) {
 			{props.editMode ?
 				<Row>
 					<Col>
-						<Button variant="outline-primary" size="sm" onClick={() => props.onAddItem(props.index)}>+ Add Item</Button>
+						<Button variant="outline-primary" size="sm" onClick={() => props.onAddItem(props.index)}>
+							<FaPlus size={8} style={{marginTop:"-2px"}} /> Add Item
+						</Button>
 					</Col>
 				</Row>
 				: null

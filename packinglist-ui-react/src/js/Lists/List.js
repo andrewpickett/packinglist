@@ -8,6 +8,7 @@ import utils from '../../utils';
 import Form from 'react-bootstrap/Form';
 import Category from './Category';
 import './List.css';
+import {FaPlus} from 'react-icons/fa';
 
 export default class List extends React.Component {
 
@@ -122,7 +123,9 @@ export default class List extends React.Component {
 					{this.state.editMode ?
 						<Row>
 							<Col className="text-left">
-								<Button variant="primary" onClick={this.handleAddCategory}>+ Add Category</Button>
+								<Button variant="primary" onClick={this.handleAddCategory}>
+									<FaPlus size={12} style={{marginTop:"-4px"}} /> Add Category
+								</Button>
 							</Col>
 							<Col className="text-right">
 								<Button variant="success" type="submit">Save List</Button>

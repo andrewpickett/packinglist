@@ -6,12 +6,15 @@ import com.profounddistortion.packinglist.model.dto.PackingListDto;
 import com.profounddistortion.packinglist.service.PackingListService;
 import com.profounddistortion.packinglist.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
@@ -64,5 +67,12 @@ public class PackingListController {
 	public PackingListDto updateList(@PathVariable long listId, @RequestBody PackingListDto list) {
 		ApplicationUser user = ApplicationUser.fromDto(userService.getUserFromJWTToken());
 		return plService.updatePackingList(user, listId, PackingList.fromDto(list)).toDto();
+	}
+
+	@DeleteMapping("/lists/{listId}")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void deleteList(@PathVariable long listId) {
+		ApplicationUser user = ApplicationUser.fromDto(userService.getUserFromJWTToken());
+		plService.deletePackingList(user, listId);
 	}
 }

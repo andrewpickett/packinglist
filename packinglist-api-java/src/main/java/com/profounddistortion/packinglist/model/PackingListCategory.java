@@ -29,7 +29,7 @@ public class PackingListCategory {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String name;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "category", cascade = CascadeType.ALL)
 	private final List<PackingListItem> items = new ArrayList<>();
 	@JoinColumn(name = "packinglist_id")
 	@ManyToOne(fetch = FetchType.LAZY)

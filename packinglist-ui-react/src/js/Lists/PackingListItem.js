@@ -1,6 +1,7 @@
 import React from 'react';
 import {Col, Row} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import {FaEdit, FaRegWindowClose} from 'react-icons/fa';
 
 export default function PackingListItem(props) {
 	const urlBase = props.isSample ? '/samples/' : '/lists/';
@@ -9,8 +10,11 @@ export default function PackingListItem(props) {
 			<Col className="text-left">
 				<Link to={urlBase + props.list.id}>{props.list.name}</Link>
 			</Col>
-			<Col className="text-right">
-				{props.isSample ? <div>&nbsp;</div> : <Link to={urlBase + props.list.id + '/edit'}>[EDIT]</Link>}
+			<Col className="col-2 text-right">
+				{props.isSample ? <div>&nbsp;</div> : <div>
+					<span className="px-2"><Link to={urlBase + props.list.id + '/edit'}><FaEdit color={"green"} /></Link></span>
+					<span className="px-2"><Link to={urlBase} onClick={(e) => props.onDelete(e, props.list.id)}><FaRegWindowClose color={"red"}/></Link></span>
+				</div>}
 			</Col>
 		</Row>
 	);
