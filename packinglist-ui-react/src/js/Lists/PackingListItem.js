@@ -10,11 +10,7 @@ export default function PackingListItem(props) {
 				<Link to={urlBase + props.list.id}>{props.list.name}</Link>
 			</Col>
 			<Col className="text-right">
-				{props.isSample ?
-					<div>&nbsp;</div>
-					:
-					<Link to={urlBase + props.list.id + '/edit'}>[EDIT]</Link>
-				}
+				{props.isSample ? <div>&nbsp;</div> : <Link to={urlBase + props.list.id + '/edit'}>[EDIT]</Link>}
 			</Col>
 		</Row>
 	);

@@ -7,6 +7,7 @@ import Unauthorized from '../Exception/Unauthorized';
 import utils from '../../utils';
 import Form from 'react-bootstrap/Form';
 import Category from './Category';
+import './List.css';
 
 export default class List extends React.Component {
 
@@ -26,6 +27,8 @@ export default class List extends React.Component {
 		this.handleAddItem = this.handleAddItem.bind(this);
 		this.handleCategoryChange = this.handleCategoryChange.bind(this);
 		this.handleItemChange = this.handleItemChange.bind(this);
+		this.handleRemoveCategory = this.handleRemoveCategory.bind(this);
+		this.handleRemoveItem = this.handleRemoveItem.bind(this);
 	}
 
 	handleSubmit(event) {
@@ -50,9 +53,21 @@ export default class List extends React.Component {
 		this.setState({list: list});
 	}
 
+	handleRemoveCategory(idx) {
+		let list = this.state.list;
+		list.categories.splice(idx, 1);
+		this.setState({list: list})
+	}
+
 	handleAddItem(idx) {
 		let list = this.state.list;
 		list.categories[idx].items.push({name: ''});
+		this.setState({list: list});
+	};
+
+	handleRemoveItem(catIdx, itemIdx) {
+		let list = this.state.list;
+		list.categories[catIdx].items.splice(itemIdx, 1);
 		this.setState({list: list});
 	}
 
@@ -85,8 +100,7 @@ export default class List extends React.Component {
 					<Container className="mx-auto col-7 text-center">
 						{this.state.editMode ?
 							<Form.Group controlId="name">
-								{/*<Form.Label>List Name</Form.Label>*/}
-								<Form.Control required type="text" name="name" placeholder="List Name" autoFocus="autoFocus"
+								<Form.Control required type="text" placeholder="List Name" autoFocus className="borderless list-text"
 												  onChange={this.handleListChange} value={this.state.list.name}/>
 							</Form.Group>
 							:
@@ -97,9 +111,11 @@ export default class List extends React.Component {
 						<CardDeck key={idx1} className="py-3">
 							{row.map((card, idx2) => (
 								<Category key={"category" + ((idx1 * 3) + idx2)} index={(idx1 * 3) + idx2}
-													 onChange={this.handleCategoryChange} editMode={this.state.editMode}
-											 		 onAddItem={this.handleAddItem} onItemChange={this.handleItemChange}
-													 category={this.state.list.categories[((idx1 * 3) + idx2)]} />
+											 onChange={this.handleCategoryChange} editMode={this.state.editMode}
+											 onAddItem={this.handleAddItem} onItemChange={this.handleItemChange}
+											 onRemove={this.handleRemoveCategory}
+											 onRemoveItem={this.handleRemoveItem}
+											 category={this.state.list.categories[((idx1 * 3) + idx2)]} />
 							))}
 						</CardDeck>
 					))}
@@ -109,7 +125,7 @@ export default class List extends React.Component {
 								<Button variant="primary" onClick={this.handleAddCategory}>+ Add Category</Button>
 							</Col>
 							<Col className="text-right">
-								<Button variant="primary" type="submit">Save List</Button>
+								<Button variant="success" type="submit">Save List</Button>
 							</Col>
 						</Row> : null}
 				</Form>

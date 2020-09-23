@@ -30,6 +30,7 @@ export default function Header() {
 							<Container className="px-4">
 								<Nav>
 									<Nav.Link href="/lists" className="py-0 px-3">My Lists</Nav.Link>
+									<Nav.Link href="/trips" className="py-0 px-3">My Trips</Nav.Link>
 									<Nav.Link href="/samples" className="py-0 px-3">Sample Lists</Nav.Link>
 								</Nav>
 							</Container>

@@ -1,0 +1,12 @@
+input.borderless {
+	border: 0;
+	border-bottom: 1px #999999 solid;
+	background: transparent;
+}
+input.borderless:focus {
+	outline-style: none;
+	box-shadow: none;
+}
+.borderless::placeholder {
+	color: #b3b3b3;
+}

@@ -1,0 +1,10 @@
+input.list-text {
+	font-weight: bolder;
+	font-size: 1.7em;
+	border-bottom: 2px #999999 solid;
+	border-top: 2px #999999 solid;
+}
+input.list-text:focus {
+	outline-style: solid;
+	box-shadow: royalblue;
+}

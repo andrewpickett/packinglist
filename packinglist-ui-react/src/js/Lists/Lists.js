@@ -28,7 +28,7 @@ export default class Lists extends React.Component {
 				if (lists && lists.length > 0) {
 					this.setState({lists: lists});
 				} else {
-					this.setState({lists: <div>You have no packing lists yet.</div>});
+					this.setState({lists: <div className="p-3">You have no packing lists yet.</div>});
 				}
 			});
 	}
