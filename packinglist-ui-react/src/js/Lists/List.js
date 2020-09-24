@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Button, Col, Container, Row} from 'react-bootstrap';
+import {Button, Col, Container, Dropdown, DropdownButton, Row} from 'react-bootstrap';
 import CardDeck from 'react-bootstrap/CardDeck';
 import auth from '../../auth';
 import Unauthorized from '../Exception/Unauthorized';
@@ -8,7 +8,7 @@ import utils from '../../utils';
 import Form from 'react-bootstrap/Form';
 import Category from './Category';
 import './List.css';
-import {FaPlus} from 'react-icons/fa';
+import {FaPlus, FaRegCopy, FaRegSave} from 'react-icons/fa';
 
 export default class List extends React.Component {
 
@@ -17,7 +17,9 @@ export default class List extends React.Component {
 		this.state = {
 			id: this.props.match.params.id,
 			list: {name: '', categories: []},
-			editMode: this.props.editMode
+			editMode: this.props.editMode,
+			samples: [{id:1, name:'Baby'}, {id:2, name:'Toddler'}, {id:3, name:'Adult'}],
+			mylists: [{id:4, name:'First List'}, {id:5, name:'Florida'}, {id:6, name:'Foobar'}]
 		}
 
 		this.baseUrl = '/api/lists' + (props.isSample ? '/samples' : '');
@@ -30,6 +32,7 @@ export default class List extends React.Component {
 		this.handleItemChange = this.handleItemChange.bind(this);
 		this.handleRemoveCategory = this.handleRemoveCategory.bind(this);
 		this.handleRemoveItem = this.handleRemoveItem.bind(this);
+		this.handleCopy = this.handleCopy.bind(this);
 	}
 
 	handleSubmit(event) {
@@ -93,6 +96,16 @@ export default class List extends React.Component {
 		}
 	}
 
+	handleCopy(isSample, id) {
+		let baseUrl = '/api/lists' + (isSample ? '/samples' : '');
+		axios.get(baseUrl + '/' + id, {})
+			.then((response) => {
+				let list = this.state.list;
+				list.categories = response.data.categories;
+				this.setState({list: list});
+			});
+	}
+
 	render() {
 		return (
 			<Container>
@@ -126,9 +139,24 @@ export default class List extends React.Component {
 								<Button variant="primary" onClick={this.handleAddCategory}>
 									<FaPlus size={12} style={{marginTop:"-4px"}} /> Add Category
 								</Button>
+								&nbsp;
+								<DropdownButton id="dropdown-basic-button" as={'span'} variant={"info"}
+													 title={<span><FaRegCopy style={{marginTop:"-4px"}} onClick={this.handleAddCategory} /> Copy From... </span>}>
+									<Dropdown.Header>Samples</Dropdown.Header>
+									{this.state.samples.map((l, idx) => (
+										<Dropdown.Item key={'sdd' + idx} onClick={() => this.handleCopy(true, l.id)}>{l.name}</Dropdown.Item>)
+									)}
+									<Dropdown.Divider />
+									<Dropdown.Header>My Lists</Dropdown.Header>
+									{this.state.mylists.map((l, idx) => (
+										<Dropdown.Item key={'mdd' + idx} onClick={() => this.handleCopy(false, l.id)}>{l.name}</Dropdown.Item>)
+									)}
+								</DropdownButton>
 							</Col>
 							<Col className="text-right">
-								<Button variant="success" type="submit">Save List</Button>
+								<Button variant="success" type="submit">
+									<FaRegSave style={{marginTop:"-4px"}} /> Save
+								</Button>
 							</Col>
 						</Row> : null}
 				</Form>

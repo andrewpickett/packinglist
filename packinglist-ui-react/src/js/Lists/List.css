@@ -8,3 +8,10 @@ input.list-text:focus {
 	outline-style: solid;
 	box-shadow: royalblue;
 }
+.dropdown-header {
+	padding: 0.25rem 1rem;
+	font-weight: bolder;
+}
+.dropdown-item {
+	padding: 0.1rem 1.5rem;
+}
