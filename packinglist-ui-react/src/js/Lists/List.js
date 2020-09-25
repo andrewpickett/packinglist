@@ -9,6 +9,8 @@ import Form from 'react-bootstrap/Form';
 import Category from './Category';
 import './List.css';
 import {FaPlus, FaRegCopy, FaRegSave} from 'react-icons/fa';
+import {ImCancelCircle} from 'react-icons/im';
+import autoBind from 'react-autobind/src/autoBind';
 
 export default class List extends React.Component {
 
@@ -18,21 +20,19 @@ export default class List extends React.Component {
 			id: this.props.match.params.id,
 			list: {name: '', categories: []},
 			editMode: this.props.editMode,
-			samples: [{id:1, name:'Baby'}, {id:2, name:'Toddler'}, {id:3, name:'Adult'}],
-			mylists: [{id:4, name:'First List'}, {id:5, name:'Florida'}, {id:6, name:'Foobar'}]
+			samples: [],
+			mylists: []
 		}
-
 		this.baseUrl = '/api/lists' + (props.isSample ? '/samples' : '');
+		this.categoryColumns = 3;
+		autoBind(this);
+	}
 
-		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleListChange = this.handleListChange.bind(this);
-		this.handleAddCategory = this.handleAddCategory.bind(this);
-		this.handleAddItem = this.handleAddItem.bind(this);
-		this.handleCategoryChange = this.handleCategoryChange.bind(this);
-		this.handleItemChange = this.handleItemChange.bind(this);
-		this.handleRemoveCategory = this.handleRemoveCategory.bind(this);
-		this.handleRemoveItem = this.handleRemoveItem.bind(this);
-		this.handleCopy = this.handleCopy.bind(this);
+	/**
+	 * Cancelling the edit just means leaving the page...
+	 */
+	handleCancel() {
+		window.location = "/lists";
 	}
 
 	handleSubmit(event) {
@@ -45,7 +45,7 @@ export default class List extends React.Component {
 		}
 	}
 
-	handleListChange(event) {
+	handleChangeList(event) {
 		let list = this.state.list;
 		list.name = event.target.value;
 		this.setState({list: list});
@@ -54,6 +54,12 @@ export default class List extends React.Component {
 	handleAddCategory() {
 		let list = this.state.list;
 		list.categories.push({name: '', items: []});
+		this.setState({list: list});
+	}
+
+	handleChangeCategory(event, idx) {
+		let list = this.state.list;
+		list.categories[idx].name = event.target.value;
 		this.setState({list: list});
 	}
 
@@ -67,7 +73,13 @@ export default class List extends React.Component {
 		let list = this.state.list;
 		list.categories[idx].items.push({name: ''});
 		this.setState({list: list});
-	};
+	}
+
+	handleChangeItem(event, catIdx, itemIdx) {
+		let list = this.state.list;
+		list.categories[catIdx].items[itemIdx].name = event.target.value;
+		this.setState({list: list});
+	}
 
 	handleRemoveItem(catIdx, itemIdx) {
 		let list = this.state.list;
@@ -75,17 +87,33 @@ export default class List extends React.Component {
 		this.setState({list: list});
 	}
 
-	handleCategoryChange(event, idx) {
-		let list = this.state.list;
-		list.categories[idx].name = event.target.value;
-		this.setState({list: list});
-	};
+	handleCopyFrom(isSample, id) {
+		let baseUrl = '/api/lists' + (isSample ? '/samples' : '');
+		axios.get(baseUrl + '/' + id)
+			.then((response) => {
+				let list = this.state.list;
+				list.categories = response.data.categories;
+				list.categories.forEach(this.cleanCategory);
+				this.setState({list: list});
+			});
+	}
 
-	handleItemChange(event, catIdx, itemIdx) {
-		let list = this.state.list;
-		list.categories[catIdx].items[itemIdx].name = event.target.value;
-		this.setState({list: list});
-	};
+	/**
+	 * Need to remove the ids from the copied categories to ensure these get saved as new entries. While this cleaning
+	 * can (and maybe should) be done on the server side before sending it back, this method will ensure that no matter
+	 * what the server does, the items are cleaned.
+	 * @param cat the cateogry to clean
+	 */
+	cleanCategory(cat) {
+		delete cat["id"];
+		delete cat["listId"];
+		if (cat.items) {
+			cat.items.forEach((item) => {
+				delete item["id"];
+				delete item["categoryId"];
+			});
+		}
+	}
 
 	componentDidMount() {
 		if (this.state.id) {
@@ -94,16 +122,12 @@ export default class List extends React.Component {
 					this.setState({list: response.data});
 				});
 		}
-	}
-
-	handleCopy(isSample, id) {
-		let baseUrl = '/api/lists' + (isSample ? '/samples' : '');
-		axios.get(baseUrl + '/' + id, {})
-			.then((response) => {
-				let list = this.state.list;
-				list.categories = response.data.categories;
-				this.setState({list: list});
-			});
+		if (this.state.editMode) {
+			axios.get(this.baseUrl + "?summary=true", {})
+				.then((response) => this.setState({mylists: response.data}));
+			axios.get(this.baseUrl + "/samples?summary=true", {})
+				.then((response) => this.setState({samples: response.data}));
+		}
 	}
 
 	render() {
@@ -115,45 +139,49 @@ export default class List extends React.Component {
 						{this.state.editMode ?
 							<Form.Group controlId="name">
 								<Form.Control required type="text" placeholder="List Name" autoFocus className="borderless list-text"
-												  onChange={this.handleListChange} value={this.state.list.name}/>
+												  onChange={this.handleChangeList} value={this.state.list.name}/>
 							</Form.Group>
 							:
 							<h1>{this.state.list.name}</h1>
 						}
 					</Container>
-					{utils.splitEvery(this.state.list.categories, 3).map((row, idx1) => (
+					{utils.splitEvery(this.state.list.categories, this.categoryColumns).map((row, idx1) => (
 						<CardDeck key={idx1} className="py-3">
-							{row.map((card, idx2) => (
-								<Category key={"category" + ((idx1 * 3) + idx2)} index={(idx1 * 3) + idx2}
-											 onChange={this.handleCategoryChange} editMode={this.state.editMode}
-											 onAddItem={this.handleAddItem} onItemChange={this.handleItemChange}
-											 onRemove={this.handleRemoveCategory}
-											 onRemoveItem={this.handleRemoveItem}
-											 category={this.state.list.categories[((idx1 * 3) + idx2)]} />
-							))}
+							{row.map((card, idx2) => {
+								let i = ((idx1 * this.categoryColumns) + idx2);
+								return <Category key={"category" + i} index={i} editMode={this.state.editMode}
+													  onChange={this.handleChangeCategory} onRemove={this.handleRemoveCategory}
+													  onAddItem={this.handleAddItem} onChangeItem={this.handleChangeItem}
+													  onRemoveItem={this.handleRemoveItem}
+													  category={this.state.list.categories[i]} />
+							})}
 						</CardDeck>
 					))}
 					{this.state.editMode ?
 						<Row>
 							<Col className="text-left">
 								<Button variant="primary" onClick={this.handleAddCategory}>
-									<FaPlus size={12} style={{marginTop:"-4px"}} /> Add Category
+									<FaPlus size={12} style={{marginTop:"-4px"}} /> Category
 								</Button>
 								&nbsp;
 								<DropdownButton id="dropdown-basic-button" as={'span'} variant={"info"}
-													 title={<span><FaRegCopy style={{marginTop:"-4px"}} onClick={this.handleAddCategory} /> Copy From... </span>}>
+													 title={<span><FaRegCopy style={{marginTop:"-4px"}} onClick={this.handleAddCategory} /> Import... </span>}>
 									<Dropdown.Header>Samples</Dropdown.Header>
 									{this.state.samples.map((l, idx) => (
-										<Dropdown.Item key={'sdd' + idx} onClick={() => this.handleCopy(true, l.id)}>{l.name}</Dropdown.Item>)
+										<Dropdown.Item key={'sdd' + idx} onClick={() => this.handleCopyFrom(true, l.id)}>{l.name}</Dropdown.Item>)
 									)}
 									<Dropdown.Divider />
 									<Dropdown.Header>My Lists</Dropdown.Header>
 									{this.state.mylists.map((l, idx) => (
-										<Dropdown.Item key={'mdd' + idx} onClick={() => this.handleCopy(false, l.id)}>{l.name}</Dropdown.Item>)
+										<Dropdown.Item key={'mdd' + idx} onClick={() => this.handleCopyFrom(false, l.id)}>{l.name}</Dropdown.Item>)
 									)}
 								</DropdownButton>
 							</Col>
 							<Col className="text-right">
+								<Button variant="danger" onClick={this.handleCancel}>
+									<ImCancelCircle style={{marginTop:"-2px"}} /> Cancel
+								</Button>
+								&nbsp;
 								<Button variant="success" type="submit">
 									<FaRegSave style={{marginTop:"-4px"}} /> Save
 								</Button>

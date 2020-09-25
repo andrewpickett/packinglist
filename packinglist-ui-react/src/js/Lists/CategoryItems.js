@@ -9,7 +9,7 @@ export default function CategoryItems(props) {
 	return (
 		<Container>
 			{props.category.items.map((item, idx) => (
-				<Row key={"cat" + props.index + "item"+ idx}>
+				<Row key={"cat" + props.catIndex + "item"+ idx}>
 					<Col>
 						{props.editMode ?
 							<Row className="py-2">
@@ -17,12 +17,12 @@ export default function CategoryItems(props) {
 									<Form.Check readOnly disabled={true} />
 								</Col>
 								<Col className="col text-left">
-									<Form.Control required type="text" autoFocus
-													placeholder="Item Name" onChange={(e) => props.onChange(e, props.index, idx)}
-													value={item.name} className="borderless" />
+									<Form.Control type="text" required autoFocus placeholder="Item Name" className="borderless"
+													  onChange={(e) => props.onChange(e, props.catIndex, idx)}
+													  value={item.name} />
 								</Col>
 								<Col className="col-1 text-left p-0">
-									<Button tabIndex={-1} onClick={() => props.onRemove(props.index, idx)} variant="link" size="sm">
+									<Button tabIndex={-1} onClick={() => props.onRemove(props.catIndex, idx)} variant="link" size="sm">
 										<FaRegWindowClose size={16} color={"red"} />
 									</Button>
 								</Col>
@@ -36,7 +36,7 @@ export default function CategoryItems(props) {
 			{props.editMode ?
 				<Row>
 					<Col>
-						<Button variant="outline-primary" size="sm" onClick={() => props.onAddItem(props.index)}>
+						<Button variant="outline-primary" size="sm" onClick={() => props.onAdd(props.catIndex)}>
 							<FaPlus size={8} style={{marginTop:"-2px"}} /> Add Item
 						</Button>
 					</Col>

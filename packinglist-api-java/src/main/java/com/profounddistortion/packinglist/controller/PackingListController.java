@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,15 +35,23 @@ public class PackingListController {
 	}
 
 	@GetMapping("/lists")
-	public List<PackingListDto> getLists() {
+	public List<PackingListDto> getLists(@RequestParam(defaultValue = "false") boolean summary) {
 		ApplicationUser user = ApplicationUser.fromDto(userService.getUserFromJWTToken());
 		log.debug("User {} attempting to get their lists.", user.getId());
-		return plService.getPackingListsForUser(user).stream().map(PackingList::toDto).collect(Collectors.toList());
+		List<PackingListDto> lists = plService.getPackingListsForUser(user).stream().map(PackingList::toDto).collect(Collectors.toList());
+		if (summary) {
+			return lists.stream().peek(dto -> dto.getCategories().clear()).collect(Collectors.toList());
+		}
+		return lists;
 	}
 
 	@GetMapping("/lists/samples")
-	public List<PackingListDto> getSamples() {
-		return plService.getPackingListSamples().stream().map(PackingList::toDto).collect(Collectors.toList());
+	public List<PackingListDto> getSamples(@RequestParam(defaultValue = "false") boolean summary) {
+		List<PackingListDto> lists = plService.getPackingListSamples().stream().map(PackingList::toDto).collect(Collectors.toList());
+		if (summary) {
+			return lists.stream().peek(dto -> dto.getCategories().clear()).collect(Collectors.toList());
+		}
+		return lists;
 	}
 
 	@GetMapping("/lists/{listId}")

@@ -27,7 +27,8 @@ export default function Category(props) {
 				}
 			</Card.Header>
 			<Card.Body>
-				<CategoryItems onAddItem={props.onAddItem} onChange={props.onItemChange} onRemove={props.onRemoveItem} index={props.index} category={props.category} editMode={props.editMode} />
+				<CategoryItems catIndex={props.index} category={props.category} editMode={props.editMode}
+									onAdd={props.onAddItem} onChange={props.onChangeItem} onRemove={props.onRemoveItem} />
 			</Card.Body>
 		</Card>
 	);
