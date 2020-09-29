@@ -2,7 +2,8 @@ import React from 'react';
 import {Button, Col, Container, Row} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import './CategoryItems.css';
-import {FaPlus, FaRegWindowClose} from 'react-icons/fa';
+import {FaPlus} from 'react-icons/fa';
+import CategoryItem from './CategoryItem';
 
 export default function CategoryItems(props) {
 
@@ -12,28 +13,15 @@ export default function CategoryItems(props) {
 				<Row key={"cat" + props.catIndex + "item"+ idx}>
 					<Col>
 						{props.editMode ?
-							<Row className="py-2">
-								<Col className="col-1 text-right py-1">
-									<Form.Check readOnly disabled={true} />
-								</Col>
-								<Col className="col text-left">
-									<Form.Control type="text" required autoFocus placeholder="Item Name" className="borderless"
-													  onChange={(e) => props.onChange(e, props.catIndex, idx)}
-													  value={item.name} />
-								</Col>
-								<Col className="col-1 text-left p-0">
-									<Button tabIndex={-1} onClick={() => props.onRemove(props.catIndex, idx)} variant="link" size="sm">
-										<FaRegWindowClose size={16} color={"red"} />
-									</Button>
-								</Col>
-							</Row>
+							<CategoryItem item={item} catIndex={props.catIndex} index={idx}
+											  onChange={props.onChange} onRemove={props.onRemove} />
 							:
 							<Form.Check label={item.name} />
 						}
 					</Col>
 				</Row>
 			))}
-			{props.editMode ?
+			{props.editMode &&
 				<Row>
 					<Col>
 						<Button variant="outline-primary" size="sm" onClick={() => props.onAdd(props.catIndex)}>
@@ -41,7 +29,6 @@ export default function CategoryItems(props) {
 						</Button>
 					</Col>
 				</Row>
-				: null
 			}
 		</Container>
 	);

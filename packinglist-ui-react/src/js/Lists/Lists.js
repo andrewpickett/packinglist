@@ -1,5 +1,7 @@
 import React from 'react';
 import {Col, Container, Row} from 'react-bootstrap';
+import {FaPlus} from 'react-icons/fa';
+import autoBind from 'react-autobind/src/autoBind';
 
 import axios from 'axios';
 import auth from '../../auth';
@@ -7,7 +9,7 @@ import auth from '../../auth';
 import Unauthorized from '../Exception/Unauthorized';
 import Loader from '../Layout/Loader';
 import PackingListItem from './PackingListItem';
-import {FaPlus} from 'react-icons/fa';
+import EmptyDiv from '../Layout/EmptyDiv';
 
 export default class Lists extends React.Component {
 	constructor(props) {
@@ -16,7 +18,7 @@ export default class Lists extends React.Component {
 			lists: <Loader />
 		}
 
-		this.handleDeleteList = this.handleDeleteList.bind(this);
+		autoBind(this);
 	}
 
 	handleDeleteList(event, id) {
@@ -35,7 +37,9 @@ export default class Lists extends React.Component {
 
 		axios.get(urlToCall)
 			.then(response => {
-				const lists = response.data.map(list => <PackingListItem key={list.id} list={list} isSample={this.props.isSample} onDelete={this.handleDeleteList}/>);
+				const lists = response.data.map(list => (
+					<PackingListItem key={list.id} list={list} isSample={this.props.isSample} onDelete={this.handleDeleteList}/>
+				));
 				if (lists && lists.length > 0) {
 					this.setState({lists: lists});
 				} else {
@@ -47,11 +51,11 @@ export default class Lists extends React.Component {
 	render() {
 		return (
 			<Container>
-				{!auth.checkAuth() ? <Unauthorized /> : null}
+				{!auth.checkAuth() && <Unauthorized />}
 				<Row className="p-1 rounded-top bg-secondary">
 					<Col className="text-right">
 						{this.props.isSample ?
-							<div>&nbsp;</div>
+							<EmptyDiv />
 							:
 							<a href="/lists/create" role="button" className="btn btn-primary btn-sm">
 								<FaPlus size={10} style={{marginTop:"-4px"}} /> New List
@@ -59,8 +63,11 @@ export default class Lists extends React.Component {
 						}
 					</Col>
 				</Row>
+				{/* Each list in the state (PackingListItem) is actually a <Row> element, so just output the list. */}
 				{this.state.lists}
-				<Row className="p-2 rounded-bottom bg-secondary">&nbsp;</Row>
+				<Row className="p-2 rounded-bottom bg-secondary">
+					<EmptyDiv />
+				</Row>
 			</Container>
 		);
 	}

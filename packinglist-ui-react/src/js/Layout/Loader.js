@@ -1,6 +1,9 @@
 import React from 'react';
 import {Row} from 'react-bootstrap';
 
+/*
+ * Loading icon for portions of the page awaiting AJAX responses.
+ */
 export default function Loader() {
 	return (
 		<Row className="text-center py-3 border-left border-right">

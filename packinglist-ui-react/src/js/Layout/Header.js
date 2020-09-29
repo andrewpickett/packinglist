@@ -1,6 +1,8 @@
 import React from 'react';
 import {Col, Container, Nav, Navbar, Row} from 'react-bootstrap';
+
 import auth from '../../auth';
+
 import logo from '../../images/logo.png';
 
 export default function Header() {
@@ -23,7 +25,7 @@ export default function Header() {
 				</Row>
 			</Container>
 
-			{isLoggedIn ?
+			{isLoggedIn &&
 				<Container fluid>
 					<Row>
 						<Col>
@@ -39,7 +41,6 @@ export default function Header() {
 						</Col>
 					</Row>
 				</Container>
-				: null
 			}
 		</header>
 	);

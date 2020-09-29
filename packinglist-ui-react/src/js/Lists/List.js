@@ -133,7 +133,7 @@ export default class List extends React.Component {
 	render() {
 		return (
 			<Container>
-				{!auth.checkAuth() ? <Unauthorized/> : null}
+				{!auth.checkAuth() && <Unauthorized/>}
 				<Form onSubmit={this.handleSubmit}>
 					<Container className="mx-auto col-7 text-center">
 						{this.state.editMode ?
@@ -157,7 +157,7 @@ export default class List extends React.Component {
 							})}
 						</CardDeck>
 					))}
-					{this.state.editMode ?
+					{this.state.editMode &&
 						<Row>
 							<Col className="text-left">
 								<Button variant="primary" onClick={this.handleAddCategory}>
@@ -186,7 +186,8 @@ export default class List extends React.Component {
 									<FaRegSave style={{marginTop:"-4px"}} /> Save
 								</Button>
 							</Col>
-						</Row> : null}
+						</Row>
+					}
 				</Form>
 			</Container>
 		);

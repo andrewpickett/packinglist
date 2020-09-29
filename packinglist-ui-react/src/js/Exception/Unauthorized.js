@@ -7,6 +7,6 @@ export default function Unauthorized(props) {
 	let errorText = props.error ? props.error : defaultException;
 	let redirect = props.redir ? props.redir : '/login';
 	return (
-		<Redirect to={{pathname: redirect, state: {error: errorText}}} />
+		<Redirect to={{pathname: redirect, state: {loginError: errorText}}} />
 	);
 }
