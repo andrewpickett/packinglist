@@ -1,5 +1,5 @@
-import {Redirect} from 'react-router';
 import React from 'react';
+import {Redirect} from 'react-router';
 
 export default function Unauthorized(props) {
 	const defaultException = "You are not authorized to view this page. Please login and try again. If the problem continues, tough."

@@ -15,6 +15,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collections;
 
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
@@ -36,8 +37,14 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) {
 		response.addHeader(HttpHeaders.WWW_AUTHENTICATE, JwtContainer.TOKEN_PREFIX.trim());
 		response.addHeader(HttpHeaders.AUTHORIZATION, JwtAuthenticationToken.buildToken((JwtAuthenticationToken) auth, jwtContainer));
-		if (((JwtAuthenticationToken) auth).isAdmin()) {
+		JwtAuthenticationToken authToken = (JwtAuthenticationToken) auth;
+		if (authToken.isAdmin()) {
 			response.addHeader("X-User-Admin", "true");
+		}
+		try (PrintWriter out = response.getWriter()) {
+			out.println(String.format("{\"id\":%d,\"name\":\"%s\"}", authToken.getId(), authToken.getPrincipal().toString()));
+		} catch (IOException e) {
+			response.addHeader("X-Auth-Error", "true");
 		}
 	}
 }

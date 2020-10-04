@@ -1,9 +1,9 @@
 import React from 'react';
 import {Button, Card, Col, Row} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import CategoryItems from './CategoryItems';
-import './Category.css';
 import {FaRegWindowClose} from 'react-icons/fa';
+
+import CategoryItems from './CategoryItems';
 
 export default function Category(props) {
 	return (

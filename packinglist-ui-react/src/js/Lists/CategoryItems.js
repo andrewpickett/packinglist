@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, Col, Container, Row} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-import './CategoryItems.css';
 import {FaPlus} from 'react-icons/fa';
+
 import CategoryItem from './CategoryItem';
 
 export default function CategoryItems(props) {

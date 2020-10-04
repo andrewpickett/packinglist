@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {FaEdit, FaRegWindowClose} from 'react-icons/fa';
 import EmptyDiv from '../Layout/EmptyDiv';
 
-export default function PackingListItem(props) {
+export default function ListRow(props) {
 	const urlBase = props.isSample ? '/samples/' : '/lists/';
 	return (
 		<Row className="p-2 border-bottom border-left border-right">

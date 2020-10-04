@@ -8,7 +8,7 @@ import auth from '../../auth';
 
 import Unauthorized from '../Exception/Unauthorized';
 import Loader from '../Layout/Loader';
-import PackingListItem from './PackingListItem';
+import ListRow from './ListRow';
 import EmptyDiv from '../Layout/EmptyDiv';
 
 export default class Lists extends React.Component {
@@ -38,7 +38,7 @@ export default class Lists extends React.Component {
 		axios.get(urlToCall)
 			.then(response => {
 				const lists = response.data.map(list => (
-					<PackingListItem key={list.id} list={list} isSample={this.props.isSample} onDelete={this.handleDeleteList}/>
+					<ListRow key={list.id} list={list} isSample={this.props.isSample} onDelete={this.handleDeleteList}/>
 				));
 				if (lists && lists.length > 0) {
 					this.setState({lists: lists});
@@ -63,7 +63,7 @@ export default class Lists extends React.Component {
 						}
 					</Col>
 				</Row>
-				{/* Each list in the state (PackingListItem) is actually a <Row> element, so just output the list. */}
+				{/* Each list in the state (ListRow) is actually a <Row> element, so just output the list. */}
 				{this.state.lists}
 				<Row className="p-2 rounded-bottom bg-secondary">
 					<EmptyDiv />

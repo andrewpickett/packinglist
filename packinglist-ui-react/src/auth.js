@@ -28,7 +28,9 @@ axios.interceptors.request.use(function (axiosConfig) {
 
 export default {
 	user: {
-		authenticated: false
+		authenticated: false,
+		id: 0,
+		name: ''
 	},
 
 	login(userInfo) {
@@ -36,7 +38,9 @@ export default {
 			axios.post('/login', userInfo)
 				.then(response => {
 					sessionStorage.setItem(config.JWT_STORAGE_KEY, response.headers.authorization);
-					sessionStorage.setItem(config.USER_STORAGE_KEY, response.data['name']);
+					sessionStorage.setItem(config.USER_STORAGE_KEY, response.data);
+					this.user.id = response.data['id'];
+					this.user.name = response.data['name'];
 					this.user.authenticated = true;
 					resolve("Successful login");
 				})
@@ -50,6 +54,8 @@ export default {
 		sessionStorage.removeItem(config.JWT_STORAGE_KEY);
 		sessionStorage.removeItem(config.USER_STORAGE_KEY);
 		this.user.authenticated = false;
+		this.user.name = '';
+		this.user.id = 0;
 		window.location = '/';
 	},
 

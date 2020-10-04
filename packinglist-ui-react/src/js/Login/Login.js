@@ -24,7 +24,7 @@ export default function Login(props) {
 		<Container className="mx-auto col-7">
 			<Fade in={!!loginError}>
 				<div className={loginError ? "alert alert-danger" : "alert"} role="alert">
-					{ loginError ? loginError : "" }&nbsp;
+					{ loginError }&nbsp;
 				</div>
 			</Fade>
 			<Form onSubmit={handleSubmit}>
