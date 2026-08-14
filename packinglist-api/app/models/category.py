@@ -10,9 +10,9 @@ class PlCategory(Base):
     __tablename__ = "pl_category"
 
     id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
-    list_id = Column(Integer, ForeignKey("pl_list.id"))
-    name = Column(String)
-    disp_order = Column(Integer)
+    list_id = Column(Integer, ForeignKey("pl_list.id"), nullable=False)
+    name = Column(String(100), nullable=False)
+    disp_order = Column(Integer, default=0)
     create_dt = Column(DateTime, default=lambda: datetime.datetime.now())
     update_dt = Column(DateTime, default=lambda: datetime.datetime.now())
 
