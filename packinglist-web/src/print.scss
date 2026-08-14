@@ -1,0 +1,25 @@
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      text-shadow: none !important;
+      font-size: 12px;
+   }
+   html, body, main, #root, h1, h2 {
+      margin: 0 !important;
+      padding: 0 !important;
+   }
+   h1 {
+      font-size: 26px;
+   }
+   h2 {
+      font-size: 18px;
+   }
+   nav, header, footer, .pl-back-button, .printer-hide {
+      display: none !important;
+   }
+   .page-break {
+      break-after: always;
+      page-break-after: always;
+    }
+}

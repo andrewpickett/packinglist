@@ -1,0 +1,96 @@
+$success: #77b045;
+$primary: #2c77b1;
+
+@import "/node_modules/bootstrap/scss/bootstrap";
+@import "print.scss";
+
+label {
+   color: #999999;
+}
+
+.pl-login-logo-text {
+   font-size: 2em;
+}
+
+.btn-success {
+   color: #ffffff;
+
+   &:hover {
+      color: #ffffff;
+   }
+
+   &:active {
+      color: #f9f9f9;
+   }
+}
+
+.pl-list-item {
+   margin: 10px 0;
+   padding: 15px;
+   border: 3px solid #77b24466;
+   border-radius: 10px;
+   cursor: pointer;
+
+   &:hover {
+      border-color: #77b244dd;
+      background-color: #77b24433;
+   }
+}
+
+.pl-category label {
+   font-size: 0.8em;
+   color: #888888;
+   font-style: italic;
+}
+
+input.pl-list-title {
+   border-top: 0;
+   border-left: 0;
+   border-right: 0;
+   font-weight: bolder;
+   font-size: 1.5em;
+
+   &:focus {
+      outline: none;
+   }
+}
+
+input.pl-category-title {
+   border-top: 0;
+   border-left: 0;
+   border-right: 0;
+
+   &:focus {
+      outline: none;
+   }
+}
+
+
+#masonry-with-columns {
+   display: -webkit-box;
+   display: -webkit-flex;
+   display: -ms-flexbox;
+   display: flex;
+   -webkit-box-orient: vertical;
+   -webkit-box-direction: normal;
+   -webkit-flex-direction: column;
+   -ms-flex-direction: column;
+   flex-direction: column;
+   -webkit-flex-wrap: wrap;
+   -ms-flex-wrap: wrap;
+   flex-wrap: wrap;
+   max-height: 1000px;
+}
+
+#masonry-with-columns div {
+   -webkit-box-flex: 1;
+   -webkit-flex: 1 0 auto;
+   -ms-flex: 1 0 auto;
+   flex: 1 0 auto;
+   background: #00997b;
+   color: white;
+   margin: 0 1rem 1rem 0;
+   text-align: center;
+   font-weight: 900;
+   font-size: 2rem;
+}

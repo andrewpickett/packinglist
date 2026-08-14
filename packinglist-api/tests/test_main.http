@@ -1,0 +1,138 @@
+########################################################################################################################
+### UNPROTECTED INITAL PAGES
+########################################################################################################################
+
+### Load the home page
+GET http://localhost:8000/
+
+### Get all users
+GET http://localhost:8000/users/
+Content-Type: application/json
+
+### Create a user
+POST http://localhost:8000/users/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Andrew Pickett",
+  "email": "picketta@gmail.com",
+  "pass1": "foobar",
+  "pass2": "foobar"
+}
+
+### Login
+POST http://localhost:8000/users/login/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "picketta@gmail.com",
+  "password": "foobar"
+}
+
+> {%
+    client.test("Get Bearer Token", function() {
+        let type = response.contentType.mimeType
+        console.log(type)
+        client.assert(type === 'application/json', "Response is not JSON" + type)
+        client.global.set("bearer_token", response.body["access_token"]);
+    });
+%}
+
+
+
+########################################################################################################################
+### USERS
+########################################################################################################################
+
+### Delete user (PROTECTED!!!)
+DELETE http://localhost:8000/users/38aef555-0710-477f-81bd-e7e3294dea09/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+### Get User (PROTECTED!!!)
+GET http://localhost:8000/users/84e13df0-4a22-4fdd-8d33-d21ce833c417/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+
+
+########################################################################################################################
+### LISTS
+########################################################################################################################
+
+### Get Lists (PROTECTED!!!)
+GET http://localhost:8000/lists/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+### Get List (PROTECTED!!!)
+GET http://localhost:8000/lists/1/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+### Create List (PROTECTED!!!)
+POST http://localhost:8000/lists/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+{
+  "name": "First List"
+}
+
+### Delete List (PROTECTED!!!)
+DELETE http://localhost:8000/lists/c62306f0-753b-4b19-aa6c-33ade02c3fcf/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+
+
+########################################################################################################################
+### CATEGORIES
+########################################################################################################################
+
+### Get Categories (PROTECTED!!!)
+GET http://localhost:8000/lists/1/categories/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+### Create Category (PROTECTED!!!)
+POST http://localhost:8000/lists/1/categories/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+{
+  "name": "Second Category"
+}
+
+### Delete Category (PROTECTED!!!)
+DELETE http://localhost:8000/lists/1/categories/1/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+
+
+########################################################################################################################
+### ITEMS
+########################################################################################################################
+
+### Get Items (PROTECTED!!!)
+GET http://localhost:8000/lists/1/categories/2/items/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+### Create Item (PROTECTED!!!)
+POST http://localhost:8000/lists/1/categories/2/items/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
+{
+  "name": "Seventh Item"
+}
+
+### Delete Item (PROTECTED!!!)
+DELETE http://localhost:8000/lists/1/categories/1/
+Content-Type: application/json
+Authorization: Bearer {{bearer_token}}
+
