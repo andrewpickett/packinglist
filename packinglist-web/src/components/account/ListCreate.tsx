@@ -1,4 +1,4 @@
-import {type ChangeEvent, type FormEvent, useState} from "react";
+import {type ChangeEvent, type SubmitEvent, useState} from "react";
 import {ListCheck, Plus} from "react-bootstrap-icons";
 import axios from "axios";
 
@@ -90,7 +90,7 @@ function ListCreate({list}: ListCreateProps) {
       }));
    };
 
-   const handleCreateListSubmit = (e: FormEvent) => {
+   const handleCreateListSubmit = (e: SubmitEvent<HTMLFormElement>) => {
       e.preventDefault();
       e.stopPropagation();
 
@@ -105,8 +105,8 @@ function ListCreate({list}: ListCreateProps) {
                   throw new Error("There was a problem creating the new list.");
                }
             }).catch(err => {
-            window.alert("ERROR: " + err);
-         });
+               window.alert("ERROR: " + err);
+            });
       } catch (err: any) {
          window.alert("ERROR2: " + err);
          return;
